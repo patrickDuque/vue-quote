@@ -1,28 +1,46 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <appHeader :maxQuote="maxQuotes" :quoteCount="quotes.length" />
+    <app-new-quote @quoteAdd="newQuote" />
+    <appQuoteGrid :quotes="quotes" @quoteDelete="deleteQuote" />
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <div class="alert alert-info">Click on a Quote to delete it</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import QuoteGrid from "./components/QuoteGrid.vue";
+import NewQuote from "./components/NewQuote.vue";
+import Header from "./components/Header.vue";
 export default {
-  name: 'App',
+  data: function() {
+    return {
+      quotes: ["Just a Quote"],
+      maxQuotes: 10
+    };
+  },
+  methods: {
+    newQuote(quote) {
+      if (this.quotes.length === 10) {
+        alert("Please delete a quote to add more.");
+      } else {
+        this.quotes.push(quote);
+      }
+    },
+    deleteQuote(index) {
+      this.quotes.splice(index, 1);
+    }
+  },
   components: {
-    HelloWorld
+    appQuoteGrid: QuoteGrid,
+    appNewQuote: NewQuote,
+    appHeader: Header
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
